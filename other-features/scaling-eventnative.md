@@ -18,7 +18,7 @@ However, any load balancer should be working
 
 ## Coordination
 
-At present **EventNative** supports [etcd](https://etcd.io) as a synchronization service. It used in creating/patching tables phase and for heart beating. For
+At present **EventNative** supports [etcd](https://etcd.io) as a coordination service. It used in creating/patching tables phase and for heart beating. For
 using two or more **EventNative** instances please make additional configuration:
 
 ```yaml
@@ -30,13 +30,13 @@ server:
 destinations:
 ...
         
-synchronization_service:
-  type: etcd
-  endpoint: http://your_etcd_host
-  connection_timeout_seconds: 60 #optional
-  
+coordination:
+  etcd:
+    endpoint: http://your_etcd_host
+    connection_timeout_seconds: 60 #optional
+
 ```
 
-Every **EventNative** instance with configured synchronization service sends heartbeat requests every 90 seconds.
+Every **EventNative** instance with configured coordination sends heartbeat requests every 90 seconds.
 For getting cluster information see [cluster information](/docs/other-features/admin-endpoints#apiv1cluster) section
 

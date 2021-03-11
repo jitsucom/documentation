@@ -10,8 +10,11 @@ Our config file consists of the following sections:
 * `server` — General configuration parameters such as port, authorization, application logs configuration, singer bridge configuration, etc.
 * `geo` — Geo resolution data (extracting city/state information from the IP address). We currently only support [MaxMind](https://www.maxmind.com/en/home) as a data provider. see [Geo Data resolution](/docs/other-features/geo-data-resolution)
 * `log` — EventNative writes all events locally and sends them to their destinations (in batch mode). This is where you configure your local temporary path and push frequency.
-* `destinations` — A set of targets where the final version of events will be stored.
-* `synchronization_service` — coordination service configuration. It is used in cluster EventNative deployments. see [Scaling EventNative](/docs/other-features/scaling-eventnative)
+* `sql_debug_log` — All SQL statements such as DDL and DML expressions can be stored in separated log files or in stdout. see [SQL Query Logs](/docs/configuration/sql-query-logs)
+* `destinations` — A set of targets where the final version of events will be stored. see [Destinations Configuration](/docs/destinations-configuration)
+* `sources` — A set of data sources to synchronize from. see [Sources Configuration](/docs/sources-configuration)
+* `users_recognition` — EventNative can update past events with user identifiers on user's identification event! see [Retrospective Users Recognition](/docs/other-feature/retrospective-user-recognition)
+* `coordination` — coordination service configuration. It is used in cluster EventNative deployments. see [Scaling EventNative](/docs/other-features/scaling-eventnative)
 * `notifications` — notifier configuration. Server starts, system errors, and panics information will be sent to it. Currently, only Slack notifications are supported.
 * `meta.storage` - meta storage configuration. At present EventNative supports only [Redis](https://redis.io/). It is used for last events caching (see [Events Cache](/docs/other-features/events-cache)), sources synchronization (see [Sources Configuration](/docs/sources-configuration/)), and [Retrospective Users Recognition](/docs/other-features/retrospective-user-recognition).
 
@@ -32,14 +35,25 @@ geo.maxmind_path: /home/eventnative/app/res/
 log:
   path: /home/eventnative/logs/events
   rotation_min: 5
+
+sql_debug_log:
+  ddl:
+  queries:
   
 destinations:
   redshift:
   bigquery:
+
+sources:
+  facebook:
+  google_analytics:
+
+users_recognition:
+  enabled: true
   
-synchronization_service:
-  type: etcd
-  endpoint: http://your_etcd_host
+coordination:
+  etcd:
+    endpoint: http://your_etcd_host
 
 notifications:
   slack:

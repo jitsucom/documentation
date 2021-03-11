@@ -97,9 +97,9 @@ Common parameters for all sources (**all parameters are required**):
 
 To see how to configure some type of source, please visit documentation pages for exact source types.
 
-### Sync jobs
+### Sync tasks
 
-At present, you can run sync jobs manually by sending an HTTP POST request to EventNative with `source_id`.
+At present, you can run sync tasks manually by sending an HTTP POST request to EventNative with `source_id` and `collection` parameters.
 
 Admin token configuration is **required**:
 
@@ -112,23 +112,41 @@ sources:
     type: ...
     ...
 ```
+<br/>
 
-<APIMethod method="POST" path="/api/v1/sources/:source_id/sync" title="Running sync job"/>
+<APIMethod method="POST" path="/api/v1/tasks" title="Running sync task"/>
 
-Authorization server secret token might be provided either as query parameter or HTTP header
+Since there can be only one task per source - collection pair in the task queue, EventNative returns ID of an existing task, or a new one.
+(HTTP responses will have different HTTP codes - see example below)
+Authorization server secret token might be provided either as query parameter or HTTP header.
 
 <h4>Parameters</h4>
 
-<APIParam name={"source_id"} dataType="string" required={true} type="pathParam" description="Source ID from 'sources' configuration section"/>
+<APIParam name={"source"} dataType="string" required={true} type="queryString" description="Source ID from 'sources' configuration section"/>
+<APIParam name={"collection"} dataType="string" required={true} type="queryString" description="Collection name from 'sources' configuration section"/>
 <APIParam name={"X-Auth-Token"} dataType="string" required={true} type="header" description="Server secret token"/>
 <APIParam name={"token"} dataType="string" required={true} type="queryString" description="Server secret token"/>
 
 <h4>Response</h4>
 
-Task has been started:
+Task has been created:
 
 ```json
-{"status": "ok"}
+HTTP 201 Created
+
+{
+    "task_id": "$sourceId_$collectionName_$UUID"
+}
+```
+
+Task already exists:
+
+```json
+HTTP 200 OK
+
+{
+    "task_id": "$sourceId_$collectionName_$UUID" #id of an existing task
+}
 ```
 
 <h4>Error Response</h4>
@@ -137,7 +155,7 @@ Source wasn't found:
 
 ```json
 {
-    "message": "Sync failed",
+    "message": "Error getting source",
     "error": "Source [jitsu_firebase] doesn't exist"
 }
 ```
@@ -153,30 +171,50 @@ Source wasn't found:
 <h4> CURL example</h4>
 
 ```bash
-curl -X POST 'https://<your_server>/api/v1/sources/<source_id>/sync?token=<admin_token>'
+curl --location --request POST 'https://<your_server>/api/v1/tasks?source=<your_source_id>&collection=<your_collection_name>&token=<admin_token>'
 ```
 
-<APIMethod method="GET" path="/api/v1/sources/:source_id/status" title="Get sync job status"/>
+<br/>
+
+<APIMethod method="GET" path="/api/v1/tasks" title="Get all sync tasks"/>
 
 Authorization server secret token might be provided either as query parameter or HTTP header
 
 <h4>Parameters</h4>
 
-<APIParam name={"source_id"} dataType="string" required={true} type="pathParam" description="Source ID from 'sources' configuration section"/>
+<APIParam name={"source"} dataType="string" required={true} type="queryString" description="Source ID from 'sources' configuration section"/>
+<APIParam name={"collection"} dataType="string" required={false} type="queryString" description="Collection name from 'sources' configuration section. Default value: all collections"/>
+<APIParam name={"start"} dataType="string" required={true} type="queryString" description="Start of time interval in ISO 8601 ('2006-01-02T15:04:05.000000Z') format" />
+<APIParam name={"end"} dataType="string" required={true} type="queryString" description="End of time interval in ISO 8601 ('2006-01-02T15:04:05.000000Z') format" />
+<APIParam name={"status"} dataType="string" required={false} type="queryString" description="Task status filter. Available values: [scheduled, running, failed, success]. Default value: all statuses" />
 <APIParam name={"X-Auth-Token"} dataType="string" required={true} type="header" description="Server secret token"/>
 <APIParam name={"token"} dataType="string" required={true} type="queryString" description="Server secret token"/>
 
 <h4>Response</h4>
 
-Sync job status per collection. `logs` - string logs representation with `\n` delimiter:
+Sync tasks list
 
 ```json
 {
-    "statuses": [
+    "tasks": [
         {
-            "collection": "auth_users",
-            "status": "OK",
-            "logs": "2021-02-15 12:45:01 [INFO]: [jitsu_firebase] Running sync task type: [firebase]\n2021-02-15 12:45:01 [INFO]: [jitsu_firebase] Total intervals: [1]\n"
+            "id": "$sourceId_$collectionName_$UUID",
+            "source": "$sourceId",
+            "collection": "$collectionName",
+            "priority": 299998384585588,
+            "created_at": "2021-03-10T22:13:32.433956Z",
+            "started_at": "2021-03-10T22:13:32.567439Z",
+            "finished_at": "2021-03-10T22:13:34.116187Z",
+            "status": "SUCCESS"
+        },
+        {
+            "id": "$sourceId_$collectionName_$UUID",
+            "source": "$sourceId",
+            "collection": "$collectionName",
+            "priority": 299998384585588,
+            "created_at": "2021-03-11T00:13:32.433956Z",
+            "started_at": "2021-03-11T00:13:32.567439Z",
+            "status": "RUNNING"
         }
     ]
 }
@@ -188,7 +226,7 @@ Source wasn't found:
 
 ```json
 {
-    "message": "Getting statuses failed",
+    "message": "Error getting source",
     "error": "Source [jitsu_firebase_auth_uses] doesn't exist"
 }
 ```
@@ -204,9 +242,125 @@ Source wasn't found:
 <h4> CURL example</h4>
 
 ```bash
-curl -X POST 'https://<your_server>/api/v1/sources/<source_id>/status?token=<admin_token>'
+curl -X GET 'https://<your_server>/api/v1/tasks?source=<your_source_id>&token=<admin_token>&start=2020-01-01T00:00:00Z&end=2024-12-31T23:59:59Z'
 ```
 
+<br/>
+
+<APIMethod method="GET" path="/api/v1/tasks/:taskId" title="Get sync task by ID"/>
+
+Authorization server secret token might be provided either as query parameter or HTTP header
+
+<h4>Parameters</h4>
+
+<APIParam name={"taskId"} dataType="string" required={true} type="pathParam" description="Task ID"/>
+<APIParam name={"X-Auth-Token"} dataType="string" required={true} type="header" description="Server secret token"/>
+<APIParam name={"token"} dataType="string" required={true} type="queryString" description="Server secret token"/>
+
+<h4>Response</h4>
+
+Sync task payload
+
+```json
+{
+    "id": "$sourceId_$collectionName_$UUID",
+    "source": "$sourceId",
+    "collection": "$collectionName",
+    "priority": 299998384583699,
+    "created_at": "2021-03-10T22:45:01.512528Z",
+    "status": "SCHEDULED"
+}
+```
+
+<h4>Error Response</h4>
+
+Source wasn't found:
+
+```json
+{
+    "message": "Error getting source",
+    "error": "Source [jitsu_firebase_auth_uses] doesn't exist"
+}
+```
+
+<h4>Authorization Error Response</h4>
+
+```json
+{
+    "message": "Admin token does not match"
+}
+```
+
+<h4> CURL example</h4>
+
+```bash
+curl -X GET 'https://<your_server>/api/v1/tasks/<your_task_id>?token=<admin_token>'
+```
+
+<br/>
+
+<APIMethod method="GET" path="/api/v1/tasks/:taskId/logs" title="Get sync task logs"/>
+
+Authorization server secret token might be provided either as query parameter or HTTP header
+
+<h4>Parameters</h4>
+
+<APIParam name={"taskId"} dataType="string" required={true} type="pathParam" description="Task ID"/>
+<APIParam name={"start"} dataType="string" required={false} type="queryString" description="Start of time interval in ISO 8601 ('2006-01-02T15:04:05.000000Z') format. Default value: Unix start epoch (1970-01-01..)" />
+<APIParam name={"end"} dataType="string" required={false} type="queryString" description="End of time interval in ISO 8601 ('2006-01-02T15:04:05.000000Z') format. Default value: time.Now() UTC" />
+<APIParam name={"X-Auth-Token"} dataType="string" required={true} type="header" description="Server secret token"/>
+<APIParam name={"token"} dataType="string" required={true} type="queryString" description="Server secret token"/>
+
+<h4>Response</h4>
+
+Sync task log messages
+
+```json
+{
+    "logs": [
+        {
+            "time": "2021-03-10T22:45:02.578999Z",
+            "message": "[$sourceId_$collectionName_$UUID] Running task...",
+            "level": "info"
+        },
+        {
+            "time": "2021-03-10T22:45:02.588929Z",
+            "message": "[$sourceId_$collectionName_$UUID] Total intervals: [1]",
+            "level": "info"
+        },
+        {
+            "time": "2021-03-10T22:45:03.870479Z",
+            "message": "[$sourceId_$collectionName_$UUID] FINISHED SUCCESSFULLY in [1.28] seconds (~ 0.02 minutes)",
+            "level": "info"
+        }
+    ]
+}
+```
+
+<h4>Error Response</h4>
+
+Source wasn't found:
+
+```json
+{
+    "message": "Error getting source",
+    "error": "Source [jitsu_firebase_auth_uses] doesn't exist"
+}
+```
+
+<h4>Authorization Error Response</h4>
+
+```json
+{
+    "message": "Admin token does not match"
+}
+```
+
+<h4> CURL example</h4>
+
+```bash
+curl -X GET 'https://<your_server>/api/v1/tasks/<your_task_id>/logs?token=<admin_token>'
+```
 
 ### How it works
 

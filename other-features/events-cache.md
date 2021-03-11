@@ -43,9 +43,10 @@ Method returns last events per destination in time interval with limit
 
 <APIParam dataType="string" required={false} type="queryString" name="destination_ids" description="Comma-separated destination ids array" />
 
+<APIParam dataType="string" required={false} type="queryString" name="start" description="start of interval in ISO 8601 ('2006-01-02T15:04:05.000000Z') format. Default value: Unix start epoch (1970-01-01..)" />
+
 <APIParam dataType="string" required={false} type="queryString" name="end" description="end of interval in ISO 8601 ('2006-01-02T15:04:05.000000Z') format. Default value: time.Now() UTC" />
 
-<APIParam dataType="string" required={false} type="queryString" name="start" description="start of interval in ISO 8601 ('2006-01-02T15:04:05.000000Z') format. Default value: time.Now() UTC" />
 
 ### Response
 
