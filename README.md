@@ -14,4 +14,4 @@ Few caveats:
  * You can't use markdown inside React components, stick to HTML
  * For code inside components use `<code inline={true}></code>` as equivalent of `\`code\`` in markdown
  * For JetBrains users: [MDX plugin](https://plugins.jetbrains.com/plugin/14944-mdx) is highly suggested. Make sure that you added .md extension to Preferences → Editor → File Types → MDX. Our .md files are actually mdx, you just need to tell that to IDE
-    * **Note!** Beware of IDEA's autoimport feature, it kills H1 header sometimes 
+    * **Note!** Beware of IDEA's auto-import feature, it kills H1 header sometimes
