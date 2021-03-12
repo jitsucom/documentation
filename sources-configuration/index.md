@@ -22,6 +22,7 @@ collections:
     type: "collection_type_id"
     table_name: "table_name_for_data"
     start_date: "2020-06-01"
+    schedule: '@daily' #cron expression. see below
     parameters:
       field1: "value"
       field2: ["values"]
@@ -36,6 +37,7 @@ collections:
 | `type`  | determines which data subset must be synchronized. If type absents, type equals to `name` parameter |
 | `table_name` | name of the table to keep synchronized data. If not set, equals to the name of collection |
 | `start_date` | start date string of data to download in `YYYY-MM-DD` format. Default values is `365` days ago |
+| `schedule` | [cron expression](https://en.wikipedia.org/wiki/Cron) automatic collection synchronization schedule. If not set - only manual collection synchronization(by HTTP API) will be available |
 | `parameters` | if the collection is parametrized, parameter values are set here. A value may be of any type (`string`, `number`, `boolean`, `list`, `object`) |
 
 If the collection has no parameters, it may be configured only by its name as a string argument. For example:
@@ -72,6 +74,7 @@ sources:
     collections:
       - name: "report_test"
         type: "report"
+        schedule: '45 23 * * 6'
         parameters:
           dimensions:
             - "ga:country"
@@ -86,9 +89,9 @@ sources:
 
 ```
 
-Common parameters for all sources (**all parameters are required**):
+Common yaml properties for all sources (**all yaml properties are required**):
 
-| Parameter | Description |
+| Property | Description |
 | :--- | :--- |
 | `type`  | determines the type of a data source from which data would be imported (like `google_analytics` or `firebase`) |
 | `destinations`  | list of destination ids where result must be stored |
@@ -99,9 +102,10 @@ To see how to configure some type of source, please visit documentation pages fo
 
 ### Sync tasks
 
-At present, you can run sync tasks manually by sending an HTTP POST request to EventNative with `source_id` and `collection` parameters.
+EventNative supports automatic collection synchronization as well as manual. For using automatic collection synchronization
+there must be configured `schedule` property in the `collection` section of configuration (see above).
 
-Admin token configuration is **required**:
+For using manual collection synchronization(HTTP API) there must be admin token configuration.
 
 ```yaml
 server:
