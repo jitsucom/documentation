@@ -6,7 +6,7 @@ import {Hint} from "../../../components/documentationComponents";
 Simultaneously, explicit SQL types can be configured in the mapping section. Explicit SQL types will
 override types determined from JSON values. They will be used in creating/patching Data Warehouse tables
 and in cast functions on insert operations. See more about types recognizing and typecasting in
-[Typecast](../../other-features/typecast) section.
+[Typecast](/docs/other-features/typecast) section.
 
 ### Configuration
 

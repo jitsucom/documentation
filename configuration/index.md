@@ -13,7 +13,7 @@ Our config file consists of the following sections:
 * `sql_debug_log` — All SQL statements such as DDL and DML expressions can be stored in separated log files or in stdout. see [SQL Query Logs](/docs/configuration/sql-query-logs)
 * `destinations` — A set of targets where the final version of events will be stored. see [Destinations Configuration](/docs/destinations-configuration)
 * `sources` — A set of data sources to synchronize from. see [Sources Configuration](/docs/sources-configuration)
-* `users_recognition` — EventNative can update past events with user identifiers on user's identification event! see [Retrospective Users Recognition](/docs/other-feature/retrospective-user-recognition)
+* `users_recognition` — EventNative can update past events with user identifiers on user's identification event! see [Retrospective Users Recognition](/docs/other-features/retrospective-user-recognition)
 * `coordination` — coordination service configuration. It is used in cluster EventNative deployments. see [Scaling EventNative](/docs/other-features/scaling-eventnative)
 * `notifications` — notifier configuration. Server starts, system errors, and panics information will be sent to it. Currently, only Slack notifications are supported.
 * `meta.storage` - meta storage configuration. At present EventNative supports only [Redis](https://redis.io/). It is used for last events caching (see [Events Cache](/docs/other-features/events-cache)), sources synchronization (see [Sources Configuration](/docs/sources-configuration/)), and [Retrospective Users Recognition](/docs/other-features/retrospective-user-recognition).
@@ -77,13 +77,13 @@ All fields from the **server** section are optional:
 | **name** | string | Unique instance name. It is used in cluster deployments. | **unnamed-server** |
 | **port** | int | TCP port for the server to listen on. | `8001` |
 | **auth** | objects array/string | see [Authorization](authorization) page. | generated UUID |
-| **public\_url** | string | Service public URL. It is used on the [welcome HTML page](../../sending-data/javascript-reference/#quickstart). Required in [Heroku deployment](../../deployment/deploy-on-heroku). | Will be got from `Host` request header |
+| **public\_url** | string | Service public URL. It is used on the [welcome HTML page](/docs/sending-data/javascript-reference/#quickstart). Required in [Heroku deployment](/docs/deployment/deploy-on-heroku). | Will be got from `Host` request header |
 | **log.path** | string | Path to application logs. If not set,  app logs will be in stdout. | - |
 | **log.rotation\_min** | int | Log files rotation minutes. If **log.path** is configured. | - |
-| **auth\_reload\_sec** | int | If an URL is set in **auth** section, authorization will be reloaded every **auth\_reload\_sec** seconds. see [Authorization](authorization#http-url) page. | `30` |
+| **auth\_reload\_sec** | int | If an URL is set in **auth** section, authorization will be reloaded every **auth\_reload\_sec** seconds. see [Authorization](/docs/configuration/authorization#http-url) page. | `30` |
 | **destinations\_reload\_sec** | int | If an URL is set in **destinations** section, destinations will be reloaded every **destinations\_reload\_sec** seconds. see [Destinations](./#destinations). | `40` |
-| **admin\_token** | string | see [Admin Endpoints](../../other-features/admin-endpoints) page. | - |
-| **metrics.prometheus.enabled** | boolean | see [Application Metrics](../../other-features/application-metrics) page. | `false` |
+| **admin\_token** | string | see [Admin Endpoints](/docs/other-features/admin-endpoints) page. | - |
+| **metrics.prometheus.enabled** | boolean | see [Application Metrics](/docs/other-features/application-metrics) page. | `false` |
 | **telemetry.disabled.usage** | boolean | Flag for disabling telemetry. **EventNative** collects usage metrics about how you use it and how it is working. **We don't collect any customer data**. | `false` |
 | **disable\_version\_reminder** | boolean | Flag for disabling log reminder banner about new **EventNatvie** versions availability. | `false` |
 

@@ -32,7 +32,7 @@ This end-point tests if EventNative can connect to particular destination
 
 <h4>Request Payload and Response</h4>
 
-Request payload should follow the same structure as [EventNative destination configuration](/docs/configuration/destinations).
+Request payload should follow the same structure as [EventNative destination configuration](/docs/destinations-configuration).
 Example for postgres
 
 ```yaml

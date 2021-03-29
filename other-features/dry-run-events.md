@@ -17,7 +17,7 @@ dry run operation until you switch them from the staged mode.
 The event will be processed by Eventnative - all the enrichment and type resolution steps will be applied. The response will have information field names, values, and data types of the event.
 
 <APIParam dataType="string" required={true} type="header" name="X-Auth-Token">
-    Token authorization. Read more at <a href="/other-features/admin-endpoints">Admin endpoints</a>
+    Token authorization. Read more at <a href="/docs/other-features/admin-endpoints">Admin endpoints</a>
 </APIParam>
 
 <APIParam dataType="string" required={true} type="queryString" name="destination_id">

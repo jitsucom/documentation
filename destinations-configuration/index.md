@@ -76,7 +76,7 @@ Following parameters are common for all destination types
     <tr>
         <td><b>data_layout.primary_key_fields</b></td>
         <td>Optional parameter to configure primary key (works for PostgresSQL and Redshift so
-            far). See <a href="/docs/destinations-configuration/primary-keys-configuration">Primary keys
+            far). See <a href="/docs/configuration/primary-keys-configuration">Primary keys
                 configuration</a></td>
     </tr>
     <tr>

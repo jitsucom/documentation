@@ -5,7 +5,7 @@ import {Hint} from "../../../components/documentationComponents";
 
 
 **EventNative** supports [Facebook Conversions API](https://developers.facebook.com/docs/marketing-api/conversions-api/) as a
-destination. All event fields after [Mapping Step](../../how-it-works/architecture#mapping-step) will be formatted as JSON body and will be sent via Facebook Conversion API with HTTP POST request.
+destination. All event fields after [Mapping Step](/docs/how-it-works/architecture#mapping-step) will be formatted as JSON body and will be sent via Facebook Conversion API with HTTP POST request.
 
 <Hint>
     Facebook destination supports only `stream` mode and **should have** mapping rules compatible with
