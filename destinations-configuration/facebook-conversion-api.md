@@ -35,6 +35,9 @@ destinations:
       mappings:
         keep_unmapped: false
         fields:
+          - src: /_timestamp
+            dst: /_timestamp
+            action: move
           - src: /event_type
             dst: /event_name
             action: move
