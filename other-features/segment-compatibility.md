@@ -57,10 +57,14 @@ destinations:
     ...
     data_layout:
       table_name_template: |
-        {{if eq .event_type "user_identify"}}
+        {{if or (eq .event_type "user_identify") (eq .event_type "identify")}}
           {{"identifies"}}
         {{else}}
-          {{.event_type}}
+          {{if or (eq .event_type "page") (eq .event_type "pageview")}}
+            {{"pages"}}
+          {{else}}
+            {{.event_type}}
+          {{end}}
         {{end}}
       mappings:
         #Use true if you would like to have Segment like DB schema + all other fields.
