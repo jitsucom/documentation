@@ -76,7 +76,7 @@ All fields from the **server** section are optional:
 | :--- | :--- | :--- | :--- |
 | **name** | string | Unique instance name. It is used in cluster deployments. | **unnamed-server** |
 | **port** | int | TCP port for the server to listen on. | `8001` |
-| **auth** | objects array/string | see [Authorization](authorization) page. | generated UUID |
+| **auth** | objects array/string | see [Authorization](/docs/configuration/authorization) page. | generated UUID |
 | **public\_url** | string | Service public URL. It is used on the [welcome HTML page](/docs/sending-data/javascript-reference/#quickstart). Required in [Heroku deployment](/docs/deployment/deploy-on-heroku). | Will be got from `Host` request header |
 | **log.path** | string | Path to application logs. If not set,  app logs will be in stdout. | - |
 | **log.rotation\_min** | int | Log files rotation minutes. If **log.path** is configured. | - |

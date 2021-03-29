@@ -4,7 +4,7 @@ import {Hint} from "../../../components/documentationComponents";
 
 **EventNative** supports [Google Analytics](https://analytics.google.com/) as a destination and
 sends data via [Measurement protocol](https://developers.google.com/analytics/devguides/collection/protocol/v1/reference).
-All event fields after [Mapping Step](../../how-it-works/architecture#mapping-step) will be
+All event fields after [Mapping Step](/docs/how-it-works/architecture#mapping-step) will be
 formatted as URL values and will be sent to Google Analytics with HTTP GET request.
 
 <Hint>
@@ -16,7 +16,7 @@ Google Analytics destination supports only `stream` mode and <b>should have</b> 
 
 For filtering events stream to prevent sending all events in GoogleAnalytics
 `table_name_template` is used. For more information see
-[Table Names and Filters](../configuration/table-names-and-filters#events-filtering).
+[Table Names and Filters](/docs/configuration/table-names-and-filters#events-filtering).
 
 ## Configuration
 
