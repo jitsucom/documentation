@@ -122,14 +122,14 @@ sources:
 
 Since there can be only one task per source - collection pair in the task queue, EventNative returns ID of an existing task, or a new one.
 (HTTP responses will have different HTTP codes - see example below)
-Authorization server secret token might be provided either as query parameter or HTTP header.
+Authorization admin token might be provided either as query parameter or HTTP header.
 
 <h4>Parameters</h4>
 
 <APIParam name={"source"} dataType="string" required={true} type="queryString" description="Source ID from 'sources' configuration section"/>
 <APIParam name={"collection"} dataType="string" required={true} type="queryString" description="Collection name from 'sources' configuration section"/>
-<APIParam name={"X-Auth-Token"} dataType="string" required={true} type="header" description="Server secret token"/>
-<APIParam name={"token"} dataType="string" required={true} type="queryString" description="Server secret token"/>
+<APIParam name={"X-Admin-Token"} dataType="string" required={true} type="header" description="Admin token"/>
+<APIParam name={"token"} dataType="string" required={true} type="queryString" description="Admin token"/>
 
 <h4>Response</h4>
 
@@ -182,7 +182,7 @@ curl --location --request POST 'https://<your_server>/api/v1/tasks?source=<your_
 
 <APIMethod method="GET" path="/api/v1/tasks" title="Get all sync tasks"/>
 
-Authorization server secret token might be provided either as query parameter or HTTP header
+Authorization admin token might be provided either as query parameter or HTTP header
 
 <h4>Parameters</h4>
 
@@ -191,8 +191,8 @@ Authorization server secret token might be provided either as query parameter or
 <APIParam name={"start"} dataType="string" required={true} type="queryString" description="Start of time interval in ISO 8601 ('2006-01-02T15:04:05.000000Z') format" />
 <APIParam name={"end"} dataType="string" required={true} type="queryString" description="End of time interval in ISO 8601 ('2006-01-02T15:04:05.000000Z') format" />
 <APIParam name={"status"} dataType="string" required={false} type="queryString" description="Task status filter. Available values: [scheduled, running, failed, success]. Default value: all statuses" />
-<APIParam name={"X-Auth-Token"} dataType="string" required={true} type="header" description="Server secret token"/>
-<APIParam name={"token"} dataType="string" required={true} type="queryString" description="Server secret token"/>
+<APIParam name={"X-Admin-Token"} dataType="string" required={true} type="header" description="Admin token"/>
+<APIParam name={"token"} dataType="string" required={true} type="queryString" description="Admin token"/>
 
 <h4>Response</h4>
 
@@ -253,13 +253,13 @@ curl -X GET 'https://<your_server>/api/v1/tasks?source=<your_source_id>&token=<a
 
 <APIMethod method="GET" path="/api/v1/tasks/:taskId" title="Get sync task by ID"/>
 
-Authorization server secret token might be provided either as query parameter or HTTP header
+Authorization admin token might be provided either as query parameter or HTTP header
 
 <h4>Parameters</h4>
 
 <APIParam name={"taskId"} dataType="string" required={true} type="pathParam" description="Task ID"/>
-<APIParam name={"X-Auth-Token"} dataType="string" required={true} type="header" description="Server secret token"/>
-<APIParam name={"token"} dataType="string" required={true} type="queryString" description="Server secret token"/>
+<APIParam name={"X-Admin-Token"} dataType="string" required={true} type="header" description="Admin token"/>
+<APIParam name={"token"} dataType="string" required={true} type="queryString" description="Admin token"/>
 
 <h4>Response</h4>
 
@@ -305,15 +305,15 @@ curl -X GET 'https://<your_server>/api/v1/tasks/<your_task_id>?token=<admin_toke
 
 <APIMethod method="GET" path="/api/v1/tasks/:taskId/logs" title="Get sync task logs"/>
 
-Authorization server secret token might be provided either as query parameter or HTTP header
+Authorization admin token might be provided either as query parameter or HTTP header
 
 <h4>Parameters</h4>
 
 <APIParam name={"taskId"} dataType="string" required={true} type="pathParam" description="Task ID"/>
 <APIParam name={"start"} dataType="string" required={false} type="queryString" description="Start of time interval in ISO 8601 ('2006-01-02T15:04:05.000000Z') format. Default value: Unix start epoch (1970-01-01..)" />
 <APIParam name={"end"} dataType="string" required={false} type="queryString" description="End of time interval in ISO 8601 ('2006-01-02T15:04:05.000000Z') format. Default value: time.Now() UTC" />
-<APIParam name={"X-Auth-Token"} dataType="string" required={true} type="header" description="Server secret token"/>
-<APIParam name={"token"} dataType="string" required={true} type="queryString" description="Server secret token"/>
+<APIParam name={"X-Admin-Token"} dataType="string" required={true} type="header" description="Admin token"/>
+<APIParam name={"token"} dataType="string" required={true} type="queryString" description="Admin token"/>
 
 <h4>Response</h4>
 
