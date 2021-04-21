@@ -18,7 +18,9 @@ services is required for certain features:
 We support multiple methods of deployment with the easiest being [**Heroku 1-click deploy**](/docs/deployment/deploy-on-heroku).
 However, for production usage we recommend [**Docker**](/docs/deployment/deploy-with-docker). Please see all available deployment methods:
 
-<LargeLink title="Deploy on heroku" href="/docs/deployment/deploy-on-heroku" />
+<LargeLink title="Deploy on Heroku" href="/docs/deployment/deploy-on-heroku" />
+
+<LargeLink title="Deploy on Qovery" href="/docs/deployment/deploy-on-qovery" />
 
 <LargeLink title="Deploy with Docker" href="/docs/deployment/deploy-with-docker" />
 
